@@ -16,7 +16,7 @@ set -e
 #   manager1-proxy
 
 docker run -d \
-  --name manager1-proxy \
+  --name nginx \
   -p 80:80 \
   -p 443:443 \
   --restart always \
@@ -25,4 +25,4 @@ docker run -d \
   -v /var/log/nginx:/var/log/nginx \
   -v /etc/letsencrypt:/etc/letsencrypt  \
   -v /etc/ssl/certs:/etc/ssl/certs \
-  manager1-proxy
+  nginx

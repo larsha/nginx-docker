@@ -2,4 +2,4 @@
 
 set -e
 
-docker kill -s HUP manager1-proxy
+docker kill -s HUP nginx

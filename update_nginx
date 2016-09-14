@@ -2,4 +2,4 @@
 
 set -e
 
-docker service update --image manager1-proxy manager1-proxy
+docker service update --image nginx nginx
