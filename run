@@ -1,0 +1,28 @@
+#!/bin/bash
+
+set -e
+
+# docker service create \
+#   -p 80:80 \
+#   -p 443:443 \
+#   --name manager1-proxy \
+#   --network cloud \
+#   --restart-condition any \
+#   --restart-max-attempts 10 \
+#   --constraint 'node.hostname == manager1' \
+#   --mount type=bind,source=/var/log/nginx,target=/var/log/nginx \
+#   --mount type=bind,source=/etc/letsencrypt/,target=/etc/letsencrypt \
+#   --mount type=bind,source=/etc/ssl/certs/,target=/etc/ssl/certs \
+#   manager1-proxy
+
+docker run -d \
+  --name manager1-proxy \
+  -p 80:80 \
+  -p 443:443 \
+  --restart always \
+  --link bolagetio_web \
+  --link nody_web \
+  -v /var/log/nginx:/var/log/nginx \
+  -v /etc/letsencrypt:/etc/letsencrypt  \
+  -v /etc/ssl/certs:/etc/ssl/certs \
+  manager1-proxy

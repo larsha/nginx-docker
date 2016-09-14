@@ -1,0 +1,5 @@
+#!/bin/bash
+
+set -e
+
+docker service update --image manager1-proxy manager1-proxy
