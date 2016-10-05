@@ -1,0 +1,43 @@
+#!/bin/bash
+
+set -e
+
+NAME=nginx
+
+# Links
+WEB1=bolagetio_web
+WEB2=nody_web
+
+build () {
+  docker build --force-rm -t nginx .
+}
+
+remove () {
+  ! docker rm --force $NAME
+}
+
+nginx () {
+  ! docker rm --force $NAME
+  docker run -d \
+    --name $NAME \
+    -p 80:80 \
+    -p 443:443 \
+    --restart always \
+    --link $WEB1 \
+    --link $WEB2 \
+    -v /var/log/nginx:/var/log/nginx \
+    -v /etc/letsencrypt:/etc/letsencrypt  \
+    -v /etc/ssl/certs:/etc/ssl/certs \
+    -v $(pwd)/nginx.conf:/etc/nginx/nginx.conf \
+    -v $(pwd)/ssl.conf:/etc/nginx/snippets/ssl.conf \
+    -v $(pwd)/sites:/etc/nginx/conf.d \
+    nginx
+}
+
+release () {
+  git checkout master
+  git pull
+  nginx
+}
+
+$1
